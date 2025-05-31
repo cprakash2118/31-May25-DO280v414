@@ -46,8 +46,86 @@ Then any 4 from above list
 
 
 ******************
-#### Point-02
+#### Point-02 - Classroom Environment:-
+-1) User Details:-
+    Login to VMs/Servers.
+    - student/student [also having sudo access ]
+    - root/redhat 
+	
+	Login to OCP cluster.
+	FYI- What required for login to OCP cluster.
+	userName ; password ; API URL/Web Console URL.
+	
+	CLI - (From Win/Linux/Mac etc) 
+	- admin/redhatocp  [cluster-admin - it means same as root account in your Linux env]
+	- developer/developer [ member account ]
+    - Default user account w.r.t OCP cluster [kubeadmin/password-location ; this account is cluster-admin]
+	  As per OpenShift LAB env - on utility.lab.example.com ; location - /home/lab/ocp4/auth/
+	  $ ssh utility.lab.example.com -l root 
+	  # cd /home/lab/ocp4/auth/
+	  # ls
+	  kubeconfig kubeadmin-password 
+	  # cat kubeconfig | grep server 
+	  https://api.ocp4.example.com:6443 
+	  # cat kubeadmin-password ; echo 
+	
+    $ oc login -u username -p password API-URL 	
+	$ oc login -u admin -p redhatocp https://api.ocp4.example.com:6443 
+	
+	https://api.clusterName.BaseDomain:6443 
+	https://api.ocp4.example.com:6443
+	
+	clusterName=ocp4
+	baseDomain=example.com 
+	port=6443 (with respect to LB - utility).
+	
+	Example:-
+	Banking application = CITI
+	BaseDomain - citi.com 
+	Cluster1=ocp4-apac
+    Cluster2=ocp4-emea 
+	Cluster3=ocp4-na 
+	
+	API URL - https://api.ocp4-apac.citi.com:6443 
+	API URL - https://api.ocp4-emea.citi.com:6443 
+	API URL - https://api.ocp4.example.com:6443 
+	
+	Web Console:-
+	https://appName-namespaceName.apps.clusterName.BaseDomain
+	https://console-openshift-console.apps.ocp4.example.com 
+	
+	
+2-) Network Domain:-
+    Network Name           IP Range            Domain Name 
+     student network     172.25.250.0/24      lab.example.com 
+	 Cluster Network     192.168.50.0/24      ocp4.example.com 
+	 classroom Network   172.25.252.0/24      example.com 
+	
+3-) VMs/Servers details:-
+    workstation.lab.example.com    - jump server (GUI).
+	utility.lab.example.com        - connect student n/w to cluster network, HAproxy, DNS, DHCP, NFS, PXE/KickStart/Apache etc.
+	master01.lab.example.com       - master/worker node 
+	
+	
+	master01-03.lab.example.com 
+	worker01-N.lab.example.com 
+	
+	OCP cluster - master & worker node [worker node -> storage/infra/custom/abc etc ]
 
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
 
 
 
