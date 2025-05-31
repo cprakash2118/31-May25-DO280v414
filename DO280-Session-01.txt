@@ -113,6 +113,102 @@ Then any 4 from above list
 	OCP cluster - master & worker node [worker node -> storage/infra/custom/abc etc ]
 
 
+#Unit-3#-  Authentication and Authorization:-
+- Configure Identity Providers
+- Define and Apply Permissions with RBAC
+
+
+- Configure Identity Providers:-
+1-# Login to OCP cluster.
+2-# How many way to login to OCP cluster.
+3-# Login to OCP cluster via identity provider (IdP=htpasswd).
+4-# Update/deleting users (via IdP=htpasswd) - secret creation, Oauth services, backed process for authentication.
+5-# RBAC [rules, roles, bindings-clusterrolebinding/rolebinding].
+
+Task-01:
+user1-5/password  ; file-name=htpasswd-upload-file ; secretName=htpasswd-secret-devops ; IdP Name = DevOPs-Team
+
+Step-1:- Create users/password database for user1-5 (username & password information)
+
+$ htpasswd --help  
+$ htpasswd -c -B -b htpasswd-upload-file user1 password 
+$ ls 
+$ cat htpasswd-upload-file
+user1:ksadhlkasjdlkasjd;lkajslkfjslkdjlsakjdlas
+
+$ htpasswd -B -b htpasswd-upload-file user2 password
+$ htpasswd -B -b htpasswd-upload-file user3 password
+$ htpasswd -B -b htpasswd-upload-file user4 password
+$ htpasswd -B -b htpasswd-upload-file user5 password
+
+FYI- Locally as of now, inject into OCP cluster via secret.
+
+Step-2:- Create secret for users/password datails.
+$ oc login -u admin -p redhatocp https://api.ocp4.example.com:6443 
+$ oc whoami 
+$ oc status 
+$ oc version 
+$ oc whoami --show-console 
+https://console-openshift-console.apps.ocp4.example.com
+
+
+$ oc create secret <tab>
+generic   - from-file, from-variable  
+docker-registry - registry url 
+tls - Certificates 
+
+$ oc create secret generic htpasswd-secret-devops --from-file htpasswd=htpasswd-upload-file -n openshift-config 
+$ oc get secret -n openshift-config
+$ oc get secret -n openshift-config -o yaml/json 
+
+
+Step-3:- Updating the Oaauth services [Oaauth is an authentication service for OCP cluster]
+$ oc get oauth/cluster -o yaml > oauth.yaml 
+$ vim oauth.yaml 
+https://docs.redhat.com/en/documentation/openshift_container_platform/4.13/pdf/authentication_and_authorization/OpenShift_Container_Platform-4.13-Authentication_and_authorization-en-US.pdf
+
+identityProviders:
+- name: idp-htpasswd-devops 
+  mappingMethod: claim 
+  type: HTPasswd
+  htpasswd:
+    fileData:
+      name: htpasswd-secret-devops
+	  
+$ oc apply -f oauth.yaml 
+
+$ oc get pods -n openshift-authentication
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
