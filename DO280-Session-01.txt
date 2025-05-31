@@ -1,0 +1,56 @@
+******************
+#### Point-01
+
+# Product Name - Red Hat OpenShift 
+
+https://www.redhat.com/en/technologies/cloud-computing/openshift
+https://www.redhat.com/en/resources/2023-forrester-wave-multicloud-container-platform
+https://reprints2.forrester.com/#/assets/2/431/RES178526/report
+
+
+# Product Vesion - As of now 4.18 (Current).
+  FYI- Training & exams - version - 414
+# DO280v414 -> EX280v414 
+# Product Editions:-
+
+1-) Cloud services editions
+ - Red Hat OpenShift Service on AWS   [ Platform=AWS, POC=AWS, BackedSupport=AWS/RH ]- https://aws.amazon.com/rosa
+ - Microsoft Azure Red Hat OpenShift  [ Platform=Azure, POC=Azure, BackedSupport=MS-Azure/RH ] 
+ - Red Hat OpenShift Dedicated        [ Platform=GCP/AWS, POC=RedHat, BackedSupport=GCP/AWS ]
+ - Red Hat OpenShift on IBM Cloud     [ Platform=IBM, POC=IBM, BackedSupport=IBM/RH ]
+
+2-) Self-managed editions
+ - Red Hat OpenShift Kubernetes Engine       [ basic ]
+ - Red Hat OpenShift Container Platform      [ Standard ]
+ - Red Hat OpenShift Platform Plus           [ Add on Services ]
+ - Red Hat OpenShift Virtualization Engine   [ OCP Virtualization ]
+ 
+3-) Services & add-ons
+ - Red Hat OpenShift AI  [AI267/EX267]
+ - Red Hat OpenShift Lightspeed
+ - Red Hat OpenShift Virtualization [DO316/346/336->EX316]
+ - Red Hat Quay
+ - Red Hat Advanced Cluster Management for Kubernetes [DO480/EX480]
+ - Red Hat Advanced Cluster Security for Kubernetes   [DO430/EX430]
+ - Red Hat Advanced Developer Suite
+ - Red Hat OpenShift Consulting
+ 
+ https://www.redhat.com/en/resources/openshift-skill-paths-datasheet
+ 
+ Red Hat Certified OpenShift Architect:-
+ https://www.redhat.com/en/services/certification/red-hat-certified-openshift-architect
+ https://www.redhat.com/en/services/certification/red-hat-certified-openshift-architect?pfe-bjtfzkwfa=exams
+ 
+-1# DO280/EX280  - Must and required 
+Then any 4 from above list 
+
+
+******************
+#### Point-02
+
+
+
+
+
+
+
