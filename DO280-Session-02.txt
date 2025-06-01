@@ -1,0 +1,163 @@
+#Quick Recap:-
+- Product - Red Hat OpenShift [As per your lab - OKE ]
+- Classroom environment:-
+  Users, Network/Domain, VMs/Servers [jump;utility/serviceName;master;worker nodes]
+  FYI- master/worker - same ; single node cluster.
+  
+  Login to VMs/Servers:-
+  - student/student ; root/redhat [student having sudo access]
+  - admin/redhatocp (cluster-admin) ; developer/developer (member only)
+  - kubeadmin/password-kubeadmin [On "utility.lab.example.com" ; location=/home/lab/ocp4/auth]
+    kubeadmin-passwd ; kubeconfig - files for login to OCP cluster.
+  
+  - API URL for OCP cluster:-
+    https://api.clusterName.baseDomain:6443 
+    As per LAB - https://api.ocp4.example.com:6443 
+  
+  - Web Console - https://appName-namespaceName.apps.clusterName.baseDomain
+    As per LAB - https://console-openshift-console.apps.ocp4.example.com	
+  
+  FYI- 
+   clusterName=ocp4
+   baseDomain=example.com 
+   appName=console 
+   namespaceName=openshift-console
+   
+   node - LoadBanlancer node -> api.ocp4.example.com 
+   port - 6443
+   
+- Login to OCP cluster via htpasswd IdP (Identity Provider)
+  IdP - htpasswd, LDAP, OpenIDConnect, GitHub etc 
+  
+  - Token based authentication 
+    admin/kubeadmin/developer/user1... 
+	userName & password (Associcated with token)
+	Who is managing token w.r.t OpenShift -> Oauth [Oauth is a inbuild service w.r.t OCP]
+	
+	Oauth -> OpenShift-apiserver -> OpenShift-kube-apiserver -> [etcd;openshift-sheduler ; openshift-controller-manager]
+	
+	Oauth -> oc get oauth cluster -o yaml > oauth.yaml 
+	OpenShift-apiserver -> porxy server and forward require to kubeapi. 
+	OpenShift-kube-apiserver - approve all authentication related request.
+	
+#####################################################
+- oauth changes [update secret - indirect change oauth]
+  oc get secret abc -n openshift-config -o yaml 
+  delete user from htpasswd then updated via set command 
+  delete entries [oc get users ; identity w.r.t ETCD]
+  
+### Define and Apply Permissions with RBAC:-
+ Role-based Access Control (RBAC)-
+ rule (Some Action)
+ role=No of actions (rules) + rules-01 + rules-02 
+ rolebinding [ adding role to user/group called role binding]
+ 
+ 
+ Project (namespace) & CLuster level (scope of RBAC)
+ 
+ project/namespace - rolebinding
+ cluster - clusterrolebinding 
+ 
+ defaults roles:-
+ 
+ 
+ 
+ cluster-role [Full access to cluster level]
+ oc adm policy add-cluster-role-to-user cluster-admin user1 
+ oc adm policy add-cluster-role-to-group cluster-admin devops_grp 
+ oc adm policy add-cluster-role-to-user self-provisioner user 21 
+ 
+ admin role [Full access to  specific project/namespace] 
+ $ oc adm policy add-role-to-user admin user11 -n project-ns01 
+ $ oc login -u user11 -p redhat https://api.ocp4.example.com:6443 
+ $ oc whoami 
+ user11 
+ $ oc policy add-role-to-user admin user12 -n project-ns01 
+ $ oc policy add-role-to-user edit user13 -n project-ns01
+ $ oc policy add-role-to-user view user14 -n project-ns01
+ 
+ Task-02-
+ 
+ user1-5/redhat123  secretName=secret-htpasswd-devops  ; IdP=IdP-htpasswd-devops-team
+ user6-10/redhat123  secretName=secret-htpasswd-app01  ; IdP=IdP-htpasswd-app01-team
+ user11/redhat123 secretName=secret-htpasswd-admin  ; IdP=IdP-htpasswd-admin-team
+ 
+ 
+ Via kubeadmin login to OCP cluster 
+ user1-5 - group=sre_grp  - cluster-admin access to group=sre_grp 
+ user6-10 - group=app01_grp - create namespace - ns-app01 
+ user6->admin ; user7-9 -> edit ; user10-> view w.r.t project "ns-app01"
+ user11 only can create project [assign self-provisioner to only user11]
+ Note:
+   oc describe clusterrolebindings | grep self-provisioner
+   oc describe clusterrolebindings self-provisioner
+   GroupName=system:authenticated:oauth -> which is part of self-provisioner role 
+   oc adm policy remove-cluster-role-to-group self-provisioner <GroupName>
+   
+   oc adm policy add-cluster-role-to-user self-provisioner user11 
+   
+   
+   
+   
+   
+   
+   
+ 
+ 
+ 
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  
+
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+
+
+
+   
+   
+   
+   
