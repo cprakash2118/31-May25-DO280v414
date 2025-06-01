@@ -88,8 +88,13 @@
  user6-10 - group=app01_grp - create namespace - ns-app01 
  user6->admin ; user7-9 -> edit ; user10-> view w.r.t project "ns-app01"
  user11 only can create project [assign self-provisioner to only user11]
+ 
+ 
  Note:
-   oc describe clusterrolebindings | grep self-provisioner
+    oc adm groups new groupname 
+    oc adm groups add-user groupname userName
+
+ oc describe clusterrolebindings | grep self-provisioner
    oc describe clusterrolebindings self-provisioner
    GroupName=system:authenticated:oauth -> which is part of self-provisioner role 
    oc adm policy remove-cluster-role-to-group self-provisioner <GroupName>
