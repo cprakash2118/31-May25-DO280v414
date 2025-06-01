@@ -1,0 +1,128 @@
+    1  sudo reboot
+    2  mkdir work 
+    3  cd work/
+    4  pwd
+    5  ll
+    6  touch htpasswd-upload-{devops,app01,admin}
+    7  file * 
+    8  ll
+    9  for x in {1..5}; do htpasswd -B -b htpasswd-upload-devops user$x redhat123 ; done
+   10  cat htpasswd-upload-devops
+   11  for x in {6..10}; do htpasswd -B -b htpasswd-upload-app01 user$x redhat123 ; done
+   12  file * 
+   13  htpasswd -b -B htpasswd-upload-admin user11 redhat123 
+   14  file * 
+   15  cat htpasswd-upload-devops
+   16  cat htpasswd-upload-app01
+   17  oc whoami 
+   18  oc login -u admin -p redhatocp https://api.ocp4.example.com:6443 
+   19  oc whoami 
+   20  oc status 
+   21  oc get oauth -o yaml 
+   22  oc get users
+   23  oc whoami 
+   24  oc create secret generic secret-htpasswd-devops --from-file htpasswd=htpasswd-upload-devops -n openshift-config 
+   25  oc create secret generic secret-htpasswd-app01 --from-file htpasswd=htpasswd-upload-app01 -n openshift-config 
+   26  oc create secret generic secret-htpasswd-admin --from-file htpasswd=htpasswd-upload-admin -n openshift-config 
+   27  oc get secret -n openshift-config | grep secret-htpasswd 
+   28  oc get oauth cluster -o yaml > oauth.yaml 
+   29  vim  oauth.yaml 
+   30  oc apply -f oauth.yaml 
+   31  oc get pods -n openshift-authentication
+   32  watch oc get pods -n openshift-authentication
+   33  for x in {1..11}; do oc login -u user$x -p redhat123 ; done
+   34  oc login -u admin -p redhatocp https://api.ocp4.example.com:6443 
+   35  oc whoami 
+   36  oc get users | grep devops
+   37  oc get users | grep app01 
+   38  oc get users | grep worker11 
+   39  oc get users | grep user11 
+   40  oc get groups
+   41  oc adm groups new sre_grp 
+   42  oc adm groups new app01_grp 
+   43  oc adm groups add-users sre_grp user1 user2 user3 user4 user5 
+   44  oc get groups
+   45  oc adm groups add-users app_grp user6 user7 user8 user9 user10 
+   46  oc adm groups add-users app01_grp user6 user7 user8 user9 user10 
+   47  oc get groups
+   48  oc login -u user1 -p redhat123 
+   49  oc whoami 
+   50  oc get nodes
+   51  oc get users
+   52  oc login -u admin -p redhatocp https://api.ocp4.example.com:6443 
+   53  oc adm policy add-cluster-role-to-group cluster-admin sre_grp
+   54  oc login -u user1 -p redhat123 
+   55  oc get users
+   56  oc describe clusterrolebindings |less
+   57  oc login -u user8 -p redhat123
+   58  oc new-project demo01
+   59  oc describe clusterrolebindings | grep self 
+   60  oc whoami 
+   61  oc login -u user1 -p redhat123 
+   62  oc describe clusterrolebindings | grep self 
+   63  oc describe clusterrolebindings self-provisioner
+   64  oc adm policy remove-cluster-role-from-group self-provisioner system:authenticated:oauth
+   65  oc describe clusterrolebindings self-provisioner
+   66  oc annotate clusterrolebinding.rbac self-provisioners 'rbac.authorization.kubernetes.io/autoupdate=false' --overwrite
+   67  oc adm policy add-cluster-role-to-user self-provisioner user11 
+   68  oc describe clusterrolebindings self-provisioner
+   69  oc annotate clusterrolebinding.rbac self-provisioners 'rbac.authorization.kubernetes.io/autoupdate=false' --overwrite
+   70  oc annotate clusterrolebinding.rbac self-provisioner 'rbac.authorization.kubernetes.io/autoupdate=false' --overwrite
+   71  oc describe clusterrolebindings self-provisioner
+   72  #cluster-admin users + user11 
+   73  oc delete project demo01 
+   74  oc login -u user8 -p redhat123
+   75  oc new-project demo01
+   76  oc projects 
+   77  oc new-project ns-app01 
+   78  oc whoami 
+   79  oc login -u user1 -p redhat123 
+   80  oc new-project ns-app01 
+   81  oc adm policy add-role-to-user admin user6 -n ns-app01 
+   82  oc login -u user6 -p redhat123 
+   83  oc policy add-role-to-user admin user7 -n ns-app01 
+   84  oc policy add-role-to-user edit user8 -n ns-app01 
+   85  oc policy add-role-to-user edit user9 -n ns-app01 
+   86  oc policy add-role-to-user view user10 -n ns-app01 
+   87  oc whoami 
+   88  oc login -u user10 -p redhat 
+   89  oc login -u user10 -p redhat123
+   90  oc new-app --name test01 httpd:2.4 
+   91  oc get pods
+   92  oc get all
+   93  oc login -u user9 -p redhat123
+   94  oc new-app --name test01 httpd:2.4 
+   95  oc get pods 
+   96  oc get all
+   97  oc login -u user1 -p redhat123
+   98  oc extract secret/secret-htpasswd-admin --to=. -n openshift-config 
+   99  ll
+  100  cat htpasswd
+  101  htpasswd -b -B htpasswd user12 red
+  102  htpasswd -b -B htpasswd user13 redhat123
+  103  ll
+  104  cat htpasswd
+  105  oc set data secret/secret-htpasswd-admin --from-file htpasswd=htpasswd -n openshift-config 
+  106  watch oc get pods -n openshift-authentication
+  107  oc login -u user12 -p red
+  108  oc login -u user13 -p redhat123
+  109  oc login -u user1 -p redhat123
+  110  oc login -u user13 -p redhat123
+  111  oc project ns-app01 
+  112  oc whoami 
+  113  oc login -u user12 -p red
+  114  oc project ns-app01 
+  115  oc login -u user1 -p redhat123
+  116  oc adm policy add-cluster-role-to-user cluster-reader user12
+  117  oc login -u user12 -p red
+  118  oc project ns-app01 
+  119  oc get pods
+  120  oc whaomi 
+  121  oc whoami 
+  122  oc get nodes
+  123  oc login -u user6 -p red
+  124  oc login -u user6 -p redhat123
+  125  oc get nodes
+  126  oc login -u user1 -p redhat123
+  127  oc describe clusterrolebindings |less
+  128  history > history-unit-3rd.txt
